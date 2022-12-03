@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Initializer',
     'ParallelManager',
     'Scaler',
+    'Dashboard',
 ]
 
 MIDDLEWARE = [
