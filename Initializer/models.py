@@ -11,6 +11,8 @@ class NodeType(models.Model):
     Parameters
     -----------
     """
+    node_name = models.CharField(max_length=50)
+    password = models.CharField(max_length=50)
     is_client = models.BooleanField(default=False)
     is_balancer = models.BooleanField(default=False)
     is_scaler = models.BooleanField(default=False)
