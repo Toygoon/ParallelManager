@@ -1,48 +1,10 @@
 import os
 
 import requests
-from django.shortcuts import render, redirect
-from django.views import View
+from django.shortcuts import redirect
 from google_auth_oauthlib.flow import Flow
 
-from Initializer.models import NodeType, Credentials
-from Initializer.utils import not_registered
-
-
-class InitializerView(View):
-    def get(self, request):
-        context = {}
-
-        # Check if already registered
-        if not_registered():
-            return render(request, 'initializer/init.html', context)
-
-        return redirect('dashboard')
-
-    def post(self, request):
-        context = {}
-
-        # Check password correct
-        if request.POST.get('password1') != request.POST.get('password2'):
-            context['name'] = request.POST.get('device_name')
-            return render(request, 'initializer/init.html', context)
-
-        # Create a schema
-        node = NodeType()
-        node.node_name = request.POST.get('device_name')
-        node.password = request.POST.get('password1')
-
-        if 'client' in request.POST:
-            node.is_client = True
-        elif 'as' in request.POST:
-            node.is_scaler = True
-        else:
-            node.is_balancer = True
-
-        node.save()
-
-        # Go to the dashboard
-        return redirect('dashboard')
+from Initializer.models import Credentials
 
 
 def oauth_request(request):
@@ -83,5 +45,5 @@ def oauth_response(request):
     request.session['credentials'] = c.to_dict()
 
     r = requests.get('https://compute.googleapis.com/compute/v1/projects/yu-21913672/zones/asia-northeast3-a/instances',
-                        headers={'Authorization': 'Bearer ' + c.token})
+                     headers={'Authorization': 'Bearer ' + c.token})
     return redirect('init')
