@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from Initializer.models import NodeType
-from Initializer.utils import not_registered
+from Initializer.utils import not_registered, not_completed
 
 
 class InitializerView(View):
@@ -12,6 +12,8 @@ class InitializerView(View):
         # Check if already registered
         if not_registered():
             return render(request, 'init_common.html', context)
+        elif not_completed():
+            return redirect(request, 'init_render')
 
         return redirect('dashboard')
 
@@ -28,18 +30,13 @@ class InitializerView(View):
         node.node_name = request.POST.get('device_name')
         node.password = request.POST.get('password1')
 
-        next = None
-
         if 'client' in request.POST:
             node.is_client = True
-            next = 'init_client'
         elif 'as' in request.POST:
             node.is_scaler = True
-            next = 'init_client'
         else:
             node.is_balancer = True
-            next = 'init_client'
 
         node.save()
 
-        return redirect(next)
+        return redirect('init_next')
