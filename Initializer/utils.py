@@ -2,5 +2,8 @@ from Initializer.models import NodeType
 
 
 def not_registered():
-    node = NodeType.objects.all().last()
-    return node is None or not node.reg_completed
+    return NodeType.objects.all().last() is None
+
+
+def not_completed():
+    return not NodeType.objects.all().last().reg_completed
