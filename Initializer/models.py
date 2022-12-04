@@ -16,6 +16,7 @@ class NodeType(models.Model):
     is_client = models.BooleanField(default=False)
     is_balancer = models.BooleanField(default=False)
     is_scaler = models.BooleanField(default=False)
+    server_ip = models.CharField(max_length=50, default=None, null=True)
 
 
 class Credentials(models.Model):
