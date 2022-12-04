@@ -36,11 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'oauth2_provider',
-    'Balancer',
-    'Client',
     'Initializer',
     'ParallelManager',
-    'Scaler',
     'Dashboard',
 ]
 
