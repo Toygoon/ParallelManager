@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'Initializer',
     'ParallelManager',
     'Dashboard',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

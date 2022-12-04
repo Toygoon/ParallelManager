@@ -24,7 +24,8 @@ def start(request):
 
 urlpatterns = [
     path('', start),
+    path('api/', include('API.urls')),
     path('init/', include('Initializer.urls')),
-    path('admin/', admin.site.urls),
     path('dashboard/', include('Dashboard.urls')),
+    path('admin/', admin.site.urls),
 ]

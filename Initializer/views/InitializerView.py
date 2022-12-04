@@ -13,7 +13,7 @@ class InitializerView(View):
         if not_registered():
             return render(request, 'init_common.html', context)
         elif not_completed():
-            return redirect(request, 'init_render')
+            return redirect('init_next')
 
         return redirect('dashboard')
 
