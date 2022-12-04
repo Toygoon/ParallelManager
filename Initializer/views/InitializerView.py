@@ -28,14 +28,18 @@ class InitializerView(View):
         node.node_name = request.POST.get('device_name')
         node.password = request.POST.get('password1')
 
+        next = None
+
         if 'client' in request.POST:
             node.is_client = True
+            next = 'init_client'
         elif 'as' in request.POST:
             node.is_scaler = True
+            next = 'init_client'
         else:
             node.is_balancer = True
+            next = 'init_client'
 
         node.save()
 
-        # Go to the dashboard
-        return redirect('dashboard')
+        return redirect(next)
