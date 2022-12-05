@@ -10,6 +10,8 @@ class Dashboard(View):
     def get(self, request):
         if not_registered() and not_completed():
             return redirect('init')
+        elif not request.session.get('login'):
+            return redirect('login')
 
         context = {}
         return render(request, 'dashboard/index.html', context)

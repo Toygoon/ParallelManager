@@ -15,7 +15,7 @@ class InitializerView(View):
         elif not_completed():
             return redirect('init_next')
 
-        return redirect('dashboard')
+        return redirect('login')
 
     def post(self, request):
         context = {}
