@@ -17,13 +17,20 @@ from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path, include
 
+from Dashboard.views import Login, logout
+
 
 def start(request):
+    if request.session.get('login'):
+        return redirect('dashboard')
+
     return redirect('init')
 
 
 urlpatterns = [
     path('', start),
+    path('login/', Login.as_view(), name='login'),
+    path('logout/', logout, name='logout'),
     path('api/', include('API.urls')),
     path('init/', include('Initializer.urls')),
     path('dashboard/', include('Dashboard.urls')),
