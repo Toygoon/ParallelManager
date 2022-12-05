@@ -13,6 +13,9 @@ def not_completed():
 
 def check_ip():
     node = NodeType.objects.all().last()
-    r = requests.get(f'{node.server_ip}/api/hello')
+    try:
+        r = requests.get(f'http://{node.server_ip}:8000/api/hello')
+    except:
+        return False
 
     return r.status_code
