@@ -9,45 +9,26 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">What's Server IP Address?</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Check your Server IP address.</h1>
                             </div>
+                            {% if error %}
+                            <div class="text-center">
+                                <p class="small">Checking IP failed. Try again.</p>
+                            </div>
+                            {% endif %}
                             <form class="user" method="post" action="">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="device_name"
-                                           name="device_name"
-                                           placeholder="Device Name" required>
+                                    <input type="text" class="form-control form-control-user" id="server_ip"
+                                           name="server_ip" placeholder="Server IP" value="{{ ip }}" required>
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
-                                               id="password1" name="password1" placeholder="Password" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                               id="password2" name="password2" placeholder="Repeat Password" required>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Choose this device type.</h1>
-                                </div>
-                                <input type="submit" class="btn btn-primary btn-user btn-block" name="client"
-                                       value="Client">
-                                <input type="submit" class="btn btn-google btn-user btn-block" name="as"
-                                       value="Auto Scaler">
-                                <input type="submit" class="btn btn-facebook btn-user btn-block" name="lb"
-                                       value="Load Balancer">
+                                <input type="submit" class="btn btn-primary btn-user btn-block"
+                                       value="OK">
                             </form>
-                            <!--
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="../dashboard/forgot-password.html">Forgot Password?</a>
+                                <a class="small" href="{% url 'init_reset' reset='reset' %}">Go Back (Reset)</a>
                             </div>
-                            <div class="text-center">
-                                <a class="small" href="../dashboard/login.html">Already have an account? Login!</a>
-                            </div>
-                            -->
                         </div>
                     </div>
                 </div>
