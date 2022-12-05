@@ -14,7 +14,7 @@ class Dashboard(View):
             return redirect('login')
 
         context = {}
-        return render(request, 'dashboard/dashboard.html', context)
+        return render(request, 'dashboard.html', context)
 
 
 class Login(View):
