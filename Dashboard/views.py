@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
+from Dashboard.utils.GetCPUUsage import get_cpu_usage
 from Initializer.models import NodeType
 from Initializer.utils import not_registered, not_completed
 
@@ -12,6 +13,12 @@ class Dashboard(View):
             return redirect('init')
         elif not request.session.get('login'):
             return redirect('login')
+
+        node = NodeType.objects.all().last()
+
+        if node.is_client:
+            context = {}
+            return render(request, 'client.html', context)
 
         context = {}
         return render(request, 'dashboard.html', context)
@@ -35,6 +42,7 @@ class Login(View):
 
         request.session['login'] = True
         return redirect('dashboard')
+
 
 def logout(request):
     if request.session.get('login'):
