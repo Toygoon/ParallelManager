@@ -17,7 +17,7 @@ class Dashboard(View):
         node = NodeType.objects.all().last()
 
         if node.is_client:
-            context = {}
+            context = {'device_name': node.node_name}
             return render(request, 'client.html', context)
 
         context = {}
