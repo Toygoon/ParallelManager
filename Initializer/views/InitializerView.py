@@ -38,5 +38,4 @@ class InitializerView(View):
             node.is_balancer = True
 
         node.save()
-
         return redirect('init_next')
