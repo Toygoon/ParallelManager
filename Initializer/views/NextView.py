@@ -17,7 +17,10 @@ class NextView(View):
             return redirect('dashboard')
 
         node = NodeType.objects.all().last()
-        return render(request, 'init_client.html')
+        if node.is_client:
+            return render(request, 'init_client.html')
+
+        return redirect('oauth_request')
 
     def post(self, request):
         context = {}

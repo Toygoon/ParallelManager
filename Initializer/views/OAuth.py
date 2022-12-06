@@ -13,7 +13,8 @@ def oauth_request(request):
         scopes=['https://www.googleapis.com/auth/cloud-platform'],
         state='12345678910')
 
-    flow.redirect_uri = 'http://127.0.0.1:8000/init/oauth/response'
+    flow.redirect_uri = request.get_full_path() + '/response'
+    print(flow.redirect_uri)
 
     url, state = flow.authorization_url(
         access_type='offline',
@@ -46,4 +47,5 @@ def oauth_response(request):
 
     r = requests.get('https://compute.googleapis.com/compute/v1/projects/yu-21913672/zones/asia-northeast3-a/instances',
                      headers={'Authorization': 'Bearer ' + c.token})
+    print(r.text)
     return redirect('init')

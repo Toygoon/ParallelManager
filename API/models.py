@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
+class ClientNodes(models.Model):
+    node_name = models.CharField(max_length=50)
+    ip = models.CharField(max_length=50)
