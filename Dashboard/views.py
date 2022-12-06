@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from Dashboard.utils.GetCPUUsage import get_cpu_usage
 from Initializer.models import NodeType
 from Initializer.utils import not_registered, not_completed
 
