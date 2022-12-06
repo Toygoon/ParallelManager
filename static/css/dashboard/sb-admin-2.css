@@ -10415,15 +10415,15 @@ a.text-secondary:hover, a.text-secondary:focus {
 }
 
 .text-success {
-    color: #1cc88a !important;
+    color: #e74a3b !important;
 }
 
 a.text-success:hover, a.text-success:focus {
-    color: #13855c !important;
+    color: #e74a3b !important;
 }
 
 .text-info {
-    color: #36b9cc !important;
+    color: #e74a3b !important;
 }
 
 a.text-info:hover, a.text-info:focus {
