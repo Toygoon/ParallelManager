@@ -8,13 +8,16 @@ from Initializer.models import Credentials
 
 
 def oauth_request(request):
+    c = Credentials.objects.all().last()
+    if c:
+        return redirect('init_next')
+
     flow = Flow.from_client_secrets_file(
         'auth.json',
         scopes=['https://www.googleapis.com/auth/cloud-platform'],
         state='12345678910')
 
     flow.redirect_uri = request.build_absolute_uri('/init/oauth/response')
-    print(flow.redirect_uri)
 
     url, state = flow.authorization_url(
         access_type='offline',
@@ -33,7 +36,6 @@ def oauth_response(request):
         state='12345678910')
 
     flow.redirect_uri = request.build_absolute_uri('/init/oauth/response')
-    print(flow.redirect_uri)
     flow.fetch_token(authorization_response=request.build_absolute_uri())
 
     credentials = flow.credentials
@@ -44,9 +46,9 @@ def oauth_response(request):
                     client_secret=credentials.client_id,
                     scopes=credentials.scopes)
     c.save()
-    request.session['credentials'] = c.to_dict()
 
+    request.session['credentials'] = c.to_dict()
     r = requests.get('https://compute.googleapis.com/compute/v1/projects/yu-21913672/zones/asia-northeast3-a/instances',
                      headers={'Authorization': 'Bearer ' + c.token})
-    print(r.text)
-    return redirect('init')
+
+    return redirect('init_next')

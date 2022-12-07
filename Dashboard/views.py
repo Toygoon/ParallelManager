@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from Initializer.models import NodeType
+from API.models import ClientNodes
+from Dashboard.utils.RefreshInfo import refresh_info
+from Initializer.models import NodeType, Credentials
 from Initializer.utils import not_registered, not_completed
 
 
 # Create your views here.
 class Dashboard(View):
-    def get(self, request):
+    def get(self, request, option=None):
         if not_registered() and not_completed():
             return redirect('init')
         elif not request.session.get('login'):
@@ -15,18 +17,34 @@ class Dashboard(View):
 
         node = NodeType.objects.all().last()
         context = {}
+        page = None
 
         if node.is_client:
             context['device_name'] = node.node_name
             context['node_type'] = 'client'
+            page = 'client.html'
+        else:
+            if node.is_scaler:
+                context['node_type'] = 'scaler'
+                page = 'scaler.html'
+            else:
+                context['node_type'] = 'balancer'
+                page = 'balancer.html'
 
-            return render(request, 'client.html', context)
-        elif node.is_scaler:
-            context['node_type'] = 'scaler'
-        elif node.is_balancer:
-            context['node_type'] = 'balancer'
+            if option == 'refresh':
+                res = refresh_info()
+                if res is False:
+                    Credentials.objects.all().delete()
 
-        return render(request, 'dashboard.html', context)
+                    return redirect('oauth_request')
+
+            nodes = ClientNodes.objects.all()
+
+            context['project_name'] = node.server_ip
+            context['vm_instances'] = nodes.count()
+            context['nodes'] = nodes
+
+        return render(request, page, context)
 
 
 class Login(View):
@@ -54,3 +72,11 @@ def logout(request):
         request.session['login'] = False
 
     return redirect('login')
+
+
+class Benchmark(View):
+    def get(self, request):
+        context = {}
+        context['node_type'] = 'balancer'
+
+        return render(request, 'benchmark.html', context)

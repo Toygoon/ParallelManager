@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.views import View
 
-from Initializer.models import NodeType
+from Initializer.models import NodeType, Credentials
 from Initializer.utils import not_completed, not_registered, check_ip
 
 
@@ -10,6 +10,7 @@ class NextView(View):
         # Valid check
         if reset and not_completed():
             NodeType.objects.all().delete()
+            Credentials.objects.all().delete()
             return redirect('init')
         elif not_registered():
             return redirect('init')
@@ -20,26 +21,35 @@ class NextView(View):
         if node.is_client:
             return render(request, 'init_client.html')
 
-        # Balancer, and scaler need oauth
-        return redirect('oauth_request')
+        return render(request, 'init_manager.html')
 
     def post(self, request):
         context = {}
         node = NodeType.objects.all().last()
 
+        input_name = 'project_name'
+        failed_url = 'init_manager.html'
+        result = None
+
         if node.is_client:
-            node.server_ip = request.POST.get('server_ip')
-            node.save()
+            input_name = 'server_ip'
+            failed_url = 'init_client.html'
 
-            if check_ip() != 200:
-                context['error'] = True
-                context['ip'] = node.server_ip
+        node.server_ip = request.POST.get(input_name)
+        node.save()
 
-                return render(request, 'init_client.html', context)
+        if node.is_client:
+            result = check_ip()
+        else:
+            result = check_ip(True)
 
-            node.reg_completed = True
-            node.save()
-        elif node.is_balancer:
-            pass
+        if result != 200:
+            context['error'] = True
+            context['msg'] = node.server_ip
+
+            return render(request, failed_url, context)
+
+        node.reg_completed = True
+        node.save()
 
         return redirect('dashboard')

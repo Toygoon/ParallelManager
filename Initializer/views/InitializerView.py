@@ -30,12 +30,15 @@ class InitializerView(View):
         node.node_name = request.POST.get('device_name')
         node.password = request.POST.get('password1')
 
+        next = 'oauth_request'
+
         if 'client' in request.POST:
             node.is_client = True
+            next = 'init_next'
         elif 'as' in request.POST:
             node.is_scaler = True
         else:
             node.is_balancer = True
 
         node.save()
-        return redirect('init_next')
+        return redirect(next)
