@@ -1,27 +1,28 @@
-from threading import Thread
+import subprocess
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-import Dashboard.utils.StressTest
-from ParallelManager.settings import STRESS_THREAD
+from ParallelManager.settings import STRESS_PROCESS
 
 
 class StressTest(APIView):
     def get(self, request, option=None):
+        msg = None
+
         if option == 'stop':
-            for s in STRESS_THREAD:
-                print(STRESS_THREAD)
-                s.stop_test()
+            for p in STRESS_PROCESS:
+                p.terminate()
+            msg = 'stopped'
+        # elif option == 'status':
+        #     if len(STRESS_PROCESS) > 0:
+        #         msg = 'running'
+        #     else:
+        #         msg = 'not running'
+        elif option == 'start':
+            p = subprocess.Popen('python StressTest.py')
+            STRESS_PROCESS.append(p)
+            msg = 'started'
 
-        else:
-            stress = Dashboard.utils.StressTest()
-
-            thread = Thread(target=stress.start)
-            thread.start()
-
-            STRESS_THREAD.append(stress)
-            print(STRESS_THREAD)
-
-        return Response({'message': 'hello'}, status=status.HTTP_200_OK)
+        return Response({'message': msg}, status=status.HTTP_200_OK)
