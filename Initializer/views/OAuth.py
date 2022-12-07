@@ -13,7 +13,7 @@ def oauth_request(request):
         scopes=['https://www.googleapis.com/auth/cloud-platform'],
         state='12345678910')
 
-    flow.redirect_uri = request.get_full_path() + '/response'
+    flow.redirect_uri = request.build_absolute_uri('/init/oauth/response')
     print(flow.redirect_uri)
 
     url, state = flow.authorization_url(
@@ -32,7 +32,8 @@ def oauth_response(request):
         scopes=['https://www.googleapis.com/auth/cloud-platform'],
         state='12345678910')
 
-    flow.redirect_uri = 'http://127.0.0.1:8000/init/oauth/response'
+    flow.redirect_uri = request.build_absolute_uri('/init/oauth/response')
+    print(flow.redirect_uri)
     flow.fetch_token(authorization_response=request.build_absolute_uri())
 
     credentials = flow.credentials
