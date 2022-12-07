@@ -126,4 +126,4 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STRESS_THREAD = list()
+STRESS_PROCESS = list()
