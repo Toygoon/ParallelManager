@@ -12,8 +12,10 @@ def stress_test(args):
 if __name__ == '__main__':
     start_time = datetime.now()
     cpu_count = cpu_count()
+
     x = 1000
     max, persist = 1000000000, 5
+
     while x < max:
         for i in range(persist):
             with Pool(cpu_count) as mp_pool:

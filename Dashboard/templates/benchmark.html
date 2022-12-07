@@ -4,7 +4,8 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Benchmark</h1>
-        <a href="{% url 'refresh_nodes' option='refresh' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        <a href="{% url 'refresh_nodes' option='refresh' %}"
+           class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-download fa-sm text-white-50"></i> Refresh</a>
     </div>
 
@@ -26,20 +27,25 @@
                                 <th>Name</th>
                                 <th>ID</th>
                                 <th>Type</th>
-                                <th>Status</th>
                                 <th>External IP</th>
-                                <th>Internal IP</th>
+                                <th>Start</th>
+                                <th>Stop</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for node in nodes %}
                                 <tr>
                                     <td>{{ node.node_name }}</td>
-                                    <td>{{ node.client_id }}</td>
                                     <td>{{ node.machine_type }}</td>
                                     <td>{{ node.status }}</td>
                                     <td>{{ node.external_ip }}</td>
-                                    <td>{{ node.internal_ip }}</td>
+                                    <td align="center"><a href="{% url 'select' cid=node.client_id option='start' %}" class="btn btn-primary btn-icon-split">
+                                        <span class="text">START</span>
+                                    </a></td>
+                                    <td align="center"><a href="{% url 'select' cid=node.client_id option='stop' %}" class="btn btn-success btn-icon-split">
+                                        <span class="text">STOP</span>
+                                    </a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>

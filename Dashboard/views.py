@@ -1,3 +1,4 @@
+import requests
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -75,8 +76,22 @@ def logout(request):
 
 
 class Benchmark(View):
-    def get(self, request):
+    def get(self, request, cid=None, option=None):
         context = {}
+
+        nodes = ClientNodes.objects.all()
+
+        if cid:
+            node = nodes.filter(client_id=cid).last()
+            try:
+                r = requests.get(f'http://{node.external_ip}/api/stress/{option}')
+                pass
+            except:
+                pass
+
+            return redirect('benchmark')
+
         context['node_type'] = 'balancer'
+        context['nodes'] = nodes
 
         return render(request, 'benchmark.html', context)
