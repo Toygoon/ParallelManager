@@ -14,12 +14,18 @@ class Dashboard(View):
             return redirect('login')
 
         node = NodeType.objects.all().last()
+        context = {}
 
         if node.is_client:
-            context = {'device_name': node.node_name}
-            return render(request, 'client.html', context)
+            context['device_name'] = node.node_name
+            context['node_type'] = 'client'
 
-        context = {}
+            return render(request, 'client.html', context)
+        elif node.is_scaler:
+            context['node_type'] = 'scaler'
+        elif node.is_balancer:
+            context['node_type'] = 'balancer'
+
         return render(request, 'dashboard.html', context)
 
 
