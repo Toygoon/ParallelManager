@@ -1,11 +1,17 @@
+import json
+import multiprocessing
+import threading
+import uuid
+from multiprocessing.pool import Pool
+
 import requests
 from django.shortcuts import render, redirect
 from django.views import View
 
-from API.models import ClientNodes
+from API.models import ClientNodes, BenchmarkUUIDs
 from Dashboard.utils.RefreshInfo import refresh_info
 from Initializer.models import NodeType, Credentials
-from Initializer.utils import not_registered, not_completed
+from Initializer.utils import not_registered, not_completed, request_cred
 
 
 # Create your views here.
@@ -75,7 +81,7 @@ def logout(request):
     return redirect('login')
 
 
-class Benchmark(View):
+class StressTestView(View):
     def get(self, request, cid=None, option=None):
         context = {}
 
@@ -94,4 +100,67 @@ class Benchmark(View):
         context['node_type'] = 'balancer'
         context['nodes'] = nodes
 
+        return render(request, 'stress.html', context)
+
+
+class BenchmarkView(View):
+    def send_request(self, ip, send_uuid, count):
+        for i in range(count):
+            r = requests.get(f'http://{ip}/api/benchmark/{send_uuid}')
+
+    def get(self, request):
+        context = {}
+
+        node = NodeType.objects.all().last().server_ip
+        r = None
+        try:
+            r = request_cred(f'https://compute.googleapis.com/compute/v1/projects/yu-21913672/global/addresses')
+
+            res = refresh_info()
+            if res is False:
+                Credentials.objects.all().delete()
+
+                return redirect('oauth_request')
+        except:
+            pass
+
+        x = json.loads(r.text)['items'][0]
+
+        context['addr_name'] = x['name']
+        context['addr_addr'] = x['address']
+
         return render(request, 'benchmark.html', context)
+
+    def post(self, request):
+        context = {}
+
+        send_uuid = uuid.uuid4()
+        times = request.POST.get('times')
+        ip = request.POST.get('ip')
+
+        threads = list()
+        for i in range(10):
+            t = threading.Thread(target=self.send_request, args=('127.0.0.1', send_uuid, int(int(times) / 10)))
+            threads.append(t)
+            t.start()
+
+        context['ip'] = ip
+        context['send_uuid'] = send_uuid
+
+        return render(request, 'benchmark_result.html', context)
+
+
+def ReceivedRequestsView(request):
+    context = {}
+
+    context['node_type'] = 'client'
+    uuid_names = set([x.recv_uuid for x in BenchmarkUUIDs.objects.all()])
+    uuids_list = list()
+    uuids = {x: BenchmarkUUIDs.objects.all().filter(recv_uuid=x).count() for x in uuid_names}
+
+    for k in uuids:
+        uuids_list.append({'uuid': k, 'count': uuids[k]})
+
+    context['uuids'] = uuids_list
+    print(uuids_list)
+    return render(request, 'requests_view.html', context)

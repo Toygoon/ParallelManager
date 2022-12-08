@@ -1,0 +1,57 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block body %}
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Received Requests</h1>
+    </div>
+
+    <!-- Content Row -->
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-secondary">Requests</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <p>Here's the table for received request packets.</p>
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>UUID</th>
+                                <th>Counts</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for u in uuids %}
+                                <tr>
+                                    <td>{{ u.uuid }}</td>
+                                    <td>{{ u.count }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <!-- Core plugin JavaScript-->
+    <script src="{% static "vendor/jquery-easing/jquery.easing.min.js" %} "></script>
+
+    <!-- Page level plugins -->
+    <script src="{% static "vendor/chart.js/Chart.min.js" %} "></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static "js/dashboard/demo/chart-area-demo.js" %} "></script>
+    <script src="{% static "js/dashboard/demo/chart-pie-demo.js" %} "></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static "js/dashboard/sb-admin-2.min.js" %} "></script>
+
+{% endblock %}

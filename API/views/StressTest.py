@@ -15,11 +15,6 @@ class StressTest(APIView):
             for p in STRESS_PROCESS:
                 p.terminate()
             msg = 'stopped'
-        # elif option == 'status':
-        #     if len(STRESS_PROCESS) > 0:
-        #         msg = 'running'
-        #     else:
-        #         msg = 'not running'
         elif option == 'start':
             p = subprocess.Popen('python StressTest.py')
             STRESS_PROCESS.append(p)

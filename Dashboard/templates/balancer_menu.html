@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-secondary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'dashboard' %}">
@@ -25,8 +25,14 @@
     </div>
 
     <li class="nav-item">
+        <a class="nav-link" href="{% url 'stress' %}">
+            <i class="fas fa-fw fa-vial"></i>
+            <span>Stress Test</span></a>
+    </li>
+
+    <li class="nav-item">
         <a class="nav-link" href="{% url 'benchmark' %}">
-            <i class="fas fa-fw fa-wrench"></i>
+            <i class="fas fa-fw fa-traffic-light"></i>
             <span>Benchmark</span></a>
     </li>
 
@@ -40,19 +46,19 @@
 
     <li class="nav-item">
         <a class="nav-link" href="">
-            <i class="fas fa-fw fa-play"></i>
+            <i class="fas fa-fw fa-retweet"></i>
             <span>Reboot</span></a>
     </li>
 
     <li class="nav-item">
         <a class="nav-link" href="">
-            <i class="fas fa-fw fa-stop"></i>
+            <i class="fas fa-fw fa-power-off"></i>
             <span>Shutdown</span></a>
     </li>
 
     <li class="nav-item">
         <a class="nav-link" href="">
-            <i class="fas fa-fw fa-backward"></i>
+            <i class="fas fa-fw fa-eraser"></i>
             <span>Reset</span></a>
     </li>
 
@@ -61,7 +67,7 @@
 
     <li class="nav-item">
         <a class="nav-link" href="{% url 'logout' %}">
-            <i class="fas fa-fw fa-lock"></i>
+            <i class="fas fa-fw fa-unlock"></i>
             <span>Logout</span></a>
     </li>
 </ul>

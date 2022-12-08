@@ -21,7 +21,7 @@ def check_ip(is_project=None):
         if is_project:
             r = request_cred(f'https://compute.googleapis.com/compute/v1/projects/{node.server_ip}/')
         else:
-            r = requests.get(f'http://{node.server_ip}:8000/api/hello')
+            r = requests.get(f'http://{node.server_ip}/api/hello')
     except:
         return False
 

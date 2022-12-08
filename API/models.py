@@ -9,3 +9,8 @@ class ClientNodes(models.Model):
     machine_type = models.CharField(max_length=50)
     status = models.CharField(max_length=50)
     created_at = models.DateField()
+
+
+class BenchmarkUUIDs(models.Model):
+    recv_uuid = models.CharField(max_length=50)
+    created_at = models.DateField(auto_now_add=True)

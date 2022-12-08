@@ -30,26 +30,14 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-secondary">Define Requests</h6>
+                    <h6 class="m-0 font-weight-bold text-secondary">Generated UUID</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="table-responsive">
-                        <p>How many requests do you want to make? This can't be undone.</p>
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small"
-                                       placeholder="Requests (ex: 1000)"
-                                       aria-label="Search" aria-describedby="basic-addon2" name="times">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">
-                                        <i class="fas fa-play fa-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <input type="hidden" name="ip" value="{{ addr_addr }}">
-                        </form>
+                        <p>Sending {{ times }} requests to the target. Here's a generated UUID.</p>
+                        <p></p>
+                        <p><code>{{ send_uuid }}</code></p>
                     </div>
                 </div>
             </div>
